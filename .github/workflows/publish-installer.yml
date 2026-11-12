@@ -1,0 +1,40 @@
+name: Publish Windows Installer
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  installer:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build standalone launcher
+        run: dotnet publish launcher/TheTableLauncher.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o output
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
+      - name: Compile Windows installer
+        shell: pwsh
+        run: |
+          $compiler = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (!(Test-Path $compiler)) { throw "Inno Setup compiler not found at $compiler" }
+          & $compiler installer\TheTable.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify official game release exists
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view game-v0.1.0 --repo ${{ github.repository }} --json tagName
+      - name: Attach installer to existing game release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload game-v0.1.0 "installer-output/TheTableSetup.exe" --repo ${{ github.repository }} --clobber
