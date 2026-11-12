@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101510">
+  <meta name="description" content="The Table — a ridiculous multiplayer basement game. Official Windows playtest website.">
+  <title>The Table — Multiplayer Basement Game</title>
+  <style>
+    :root { color-scheme: dark; --bg:#101510; --panel:#192219; --line:#354637; --green:#b5ffbc; --muted:#aab8aa; --white:#f2f7f0 }
+    * { box-sizing:border-box }
+    body { margin:0; background:radial-gradient(ellipse at 50% 8%,#263c28 0%,var(--bg) 55%); color:var(--white); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; min-height:100vh }
+    a { color:var(--green) }
+    .wrap { width:min(850px,calc(100% - 36px)); margin:auto }
+    header { padding:28px 0; display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line) }
+    .brand { color:var(--green); font-size:14px; font-weight:800; letter-spacing:.2em }
+    .status { font-size:12px; color:var(--muted); border:1px solid var(--line); border-radius:30px; padding:8px 12px }
+    main { padding:88px 0 60px; text-align:center }
+    .eyebrow { color:var(--green); letter-spacing:.2em; text-transform:uppercase; font-size:12px; font-weight:700 }
+    h1 { font-size:clamp(58px,12vw,115px); letter-spacing:-.07em; line-height:1; margin:20px 0 }
+    h1 span { color:var(--green) }
+    .subtitle { color:var(--muted); font-size:clamp(17px,3vw,22px); max-width:570px; margin:0 auto; line-height:1.6 }
+    .notice { margin:36px auto 0; max-width:580px; padding:20px 24px; border:1px solid var(--line); background:var(--panel); border-radius:16px }
+    .notice strong { display:block; color:var(--green); margin-bottom:8px }
+    .notice p { color:var(--muted); margin:0; line-height:1.65 }
+    .actions { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin:28px 0 0 }
+    .button { display:inline-block; text-decoration:none; border:1px solid #6fa778; border-radius:10px; padding:13px 20px; font-weight:650 }
+    .button:hover { background:#223626 }
+    .grid { margin-top:72px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; text-align:left }
+    .feature { border:1px solid var(--line); background:#172017; border-radius:14px; padding:23px }
+    .feature h2 { font-size:16px; margin:0 0 10px }
+    .feature p { color:var(--muted); margin:0; line-height:1.6; font-size:14px }
+    footer { border-top:1px solid var(--line); padding:24px 0 36px; color:var(--muted); font-size:13px; text-align:center }
+    @media(max-width:640px) {main{padding-top:64px}.grid{grid-template-columns:1fr}.feature{padding:18px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header><div class="brand">THE TABLE_</div><div class="status">Windows playtest · In development</div></header>
+    <main>
+      <div class="eyebrow">A multiplayer basement experience</div>
+      <h1>THE TABLE<span>_</span></h1>
+      <p class="subtitle">Three idiots. One basement. A table full of terrible decisions.</p>
+      <section class="notice" aria-label="Download availability">
+        <strong>The first public playtest is coming.</strong>
+        <p>We're finishing our first minigame, The Button, and preparing a simple Windows launcher with automatic updates. The download will appear here when it's ready.</p>
+      </section>
+      <div class="actions"><a class="button" href="https://github.com/JosephBessette01/TheTable/releases">View official releases</a></div>
+      <div class="grid">
+        <section class="feature"><h2>🎮 Three players</h2><p>Hang out in a deeply questionable basement with your friends.</p></section>
+        <section class="feature"><h2>🔴 The Button</h2><p>Find the button before your friends do. First to five wins.</p></section>
+        <section class="feature"><h2>🔄 Easy updates</h2><p>Our planned Windows launcher will handle updates before you play.</p></section>
+      </div>
+    </main>
+    <footer>THE TABLE · Official playtest website · Game downloads will be announced here</footer>
+  </div>
+</body>
+</html>
