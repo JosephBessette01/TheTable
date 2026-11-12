@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'launcher/**'
+      - 'installer/**'
       - '.github/workflows/build-launcher.yml'
   workflow_dispatch:
 
@@ -21,6 +22,22 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Publish self-contained launcher
         run: dotnet publish launcher/TheTableLauncher.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o output
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $compiler = "${env:ProgramFiles(x86)}\\Inno Setup 6\\ISCC.exe"
+          if (!(Test-Path $compiler)) { throw "Inno Setup compiler not found: $compiler" }
+          & $compiler installer\\TheTable.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: TheTableSetup-Windows-x64
+          path: installer-output/TheTableSetup.exe
+          if-no-files-found: error
       - name: Upload test artifact
         uses: actions/upload-artifact@v4
         with:
