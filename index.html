@@ -26,6 +26,10 @@
     .actions { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin:28px 0 0 }
     .button { display:inline-block; text-decoration:none; border:1px solid #6fa778; border-radius:10px; padding:13px 20px; font-weight:650 }
     .button:hover { background:#223626 }
+    .button.primary { background:var(--green); color:#102015; border-color:var(--green); font-weight:800; padding:16px 27px }
+    .button.primary:hover { background:#d6ffda }
+    .button[aria-disabled="true"] { opacity:.55; pointer-events:none; cursor:default }
+    .help { color:var(--muted); font-size:13px; margin-top:14px }
     .grid { margin-top:72px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; text-align:left }
     .feature { border:1px solid var(--line); background:#172017; border-radius:14px; padding:23px }
     .feature h2 { font-size:16px; margin:0 0 10px }
@@ -42,17 +46,46 @@
       <h1>THE TABLE<span>_</span></h1>
       <p class="subtitle">Three idiots. One basement. A table full of terrible decisions.</p>
       <section class="notice" aria-label="Download availability">
-        <strong>The first public playtest is coming.</strong>
-        <p>We're finishing our first minigame, The Button, and preparing a simple Windows launcher with automatic updates. The download will appear here when it's ready.</p>
+        <strong>The Table — Windows Playtest V0.1.0</strong>
+        <p>Our first game build is live! The Windows launcher installs the game and checks for updates. The single-click installer will be available here as soon as it's published.</p>
       </section>
-      <div class="actions"><a class="button" href="https://github.com/JosephBessette01/TheTable/releases">View official releases</a></div>
+      <div class="actions"><a id="download" class="button primary" href="#" aria-disabled="true">PREPARING WINDOWS DOWNLOAD...</a><a class="button" href="https://github.com/JosephBessette01/TheTable/releases/tag/game-v0.1.0">View game release</a></div>
+      <p id="download-help" class="help" aria-live="polite">Checking for the official installer...</p>
       <div class="grid">
         <section class="feature"><h2>🎮 Three players</h2><p>Hang out in a deeply questionable basement with your friends.</p></section>
         <section class="feature"><h2>🔴 The Button</h2><p>Find the button before your friends do. First to five wins.</p></section>
-        <section class="feature"><h2>🔄 Easy updates</h2><p>Our planned Windows launcher will handle updates before you play.</p></section>
+        <section class="feature"><h2>🔄 Easy updates</h2><p>The launcher checks GitHub for game updates when you open it.</p></section>
       </div>
     </main>
-    <footer>THE TABLE · Official playtest website · Game downloads will be announced here</footer>
+    <footer>THE TABLE · Official Windows playtest · Experimental build</footer>
   </div>
+  <script>
+    (async function () {
+      const button = document.getElementById('download');
+      const hint = document.getElementById('download-help');
+      const expected = 'TheTableSetup.exe';
+      try {
+        const response = await fetch('https://api.github.com/repos/JosephBessette01/TheTable/releases/tags/game-v0.1.0', { headers: { 'Accept': 'application/vnd.github+json' } });
+        if (!response.ok) throw new Error('Release unavailable');
+        const release = await response.json();
+        const asset = (release.assets || []).find(a => a.name === expected);
+        if (!asset) {
+          button.textContent = 'WINDOWS INSTALLER COMING SOON';
+          hint.textContent = 'The game build is live. We are publishing the one-click setup file.';
+          return;
+        }
+        button.textContent = '↓ DOWNLOAD FOR WINDOWS';
+        button.href = asset.browser_download_url;
+        button.removeAttribute('aria-disabled');
+        button.setAttribute('download', expected);
+        hint.textContent = 'Windows 10/11 · One installer · Launcher downloads the latest game automatically';
+      } catch (_) {
+        button.textContent = 'VIEW WINDOWS RELEASE';
+        button.href = 'https://github.com/JosephBessette01/TheTable/releases/tag/game-v0.1.0';
+        button.removeAttribute('aria-disabled');
+        hint.textContent = 'Installer status could not be checked. Open the release page to view available files.';
+      }
+    })();
+  </script>
 </body>
 </html>
